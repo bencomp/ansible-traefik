@@ -45,6 +45,15 @@
   notify:
     - Restart traefik
 
+- name: Copy traefik logrotate config file
+  template:
+    src: "traefik.logrotate.j2"
+    dest: "{{ traefik_logrotate_d }}/traefik"
+    owner: root
+    group: root
+    mode: 0644
+    validate: "logrotate %s --debug"
+
 - name: Ensure traefik service is stopped before traefik update
   service:
     name: traefik

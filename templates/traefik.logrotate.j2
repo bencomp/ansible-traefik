@@ -1,0 +1,14 @@
+{{ traefik_log_dir }}/*.log {
+  daily
+  rotate 30
+  missingok
+  notifempty
+  compress
+  dateext
+  dateformat .%Y-%m-%d
+  create 0644 root root
+  sharedscripts
+  postrotate
+    systemctl kill --signal="USR1" traefik
+  endscript
+}

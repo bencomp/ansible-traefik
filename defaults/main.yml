@@ -7,6 +7,7 @@ traefik_config_dir: /etc
 traefik_config_file: "{{ traefik_config_dir }}/traefik.toml"
 traefik_template: traefik.toml
 traefik_log_dir: /var/log/traefik
+traefik_logrotate_d: /etc/logrotate.d
 traefik_systemd_unit_template: traefik.service
 traefik_systemd_unit_dest: /etc/systemd/system/traefik.service
 traefik_update: no
