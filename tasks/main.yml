@@ -16,6 +16,24 @@
     state: directory
   with_items:
     - "{{ traefik_install_dir }}"
+    - "{{ traefik_config_dir }}"
+    - "{{ traefik_log_dir }}"
+
+- name: Create traefik acme.json
+  file:
+    dest: "{{ traefik_acme_file }}"
+    state: touch
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Copy traefik basic auth user file
+  template:
+    src: "./templates/htpasswd.j2"
+    dest: "{{ traefik_dashboard_userfile }}"
+    owner: root
+    group: root
+    mode: 0600
 
 - name: Copy traefik config file
   template:
@@ -52,3 +70,14 @@
     state: started
     enabled: yes
     daemon_reload: yes
+
+- name: Install UFW rules for Traefik
+  template:
+    src: "./templates/traefik.conf.j2"
+    dest: "/etc/ufw/applications.d/traefik"
+    owner: root
+    group: root
+    mode: 0644
+
+# UFW management is currently in preview, so better do that manually.
+#    sudo ufw allow "Traefik HTTP"
